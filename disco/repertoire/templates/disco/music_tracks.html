@@ -1,0 +1,67 @@
+<!-- templates/disco/music_tracks.html -->
+{% extends 'base.html' %}
+
+{% block title %}Музыка - Дискотека{% endblock %}
+
+{% block content %}
+<h1>🎵 Музыкальные произведения</h1>
+
+<div class="search-form">
+    <form method="get">
+        <div style="display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: end;">
+            <div class="form-group">
+                <label for="id_genre">Фильтр по жанру:</label>
+                <select name="genre" id="id_genre">
+                    <option value="">Все жанры</option>
+                    {% for genre in genres %}
+                    <option value="{{ genre.id }}" {% if request.GET.genre == genre.id|stringformat:"i" %}selected{% endif %}>
+                        {{ genre.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <button type="submit" class="btn">🔍 Применить</button>
+                <a href="{% url 'repertoire:music_tracks' %}" class="btn">🔄 Сбросить</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% if tracks %}
+    <table>
+        <thead>
+            <tr>
+                <th>Исполнитель</th>
+                <th>Название трека</th>
+                <th>Жанр</th>
+                <th>Длительность</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for track in tracks %}
+            <tr>
+                <td><strong>{{ track.artist }}</strong></td>
+                <td>{{ track.title }}</td>
+                <td>
+                    <span style="background: #764ba2; color: white; padding: 0.2rem 0.5rem; border-radius: 15px; font-size: 0.8rem;">
+                        {{ track.genre }}
+                    </span>
+                </td>
+                <td>
+                    {% if track.duration %}
+                        {{ track.duration }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <div style="text-align: center; padding: 2rem;">
+        <h3>😔 Треков не найдено</h3>
+    </div>
+{% endif %}
+{% endblock %}

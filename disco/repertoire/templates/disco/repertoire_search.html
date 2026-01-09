@@ -1,0 +1,75 @@
+<!-- templates/disco/repertoire_search.html -->
+{% extends 'base.html' %}
+
+{% block title %}Поиск - Дискотека{% endblock %}
+
+{% block content %}
+<h1>🔍 Расширенный поиск</h1>
+
+<div class="search-form">
+    <form method="get">
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+                <label for="id_genre">Жанр:</label>
+                {{ form.genre }}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_date">Дата:</label>
+                {{ form.date }}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_hall">Зал:</label>
+                {{ form.hall }}
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 1rem;">
+            <button type="submit" class="btn">🔍 Найти</button>
+            <a href="{% url 'repertoire:repertoire_search' %}" class="btn">🔄 Сбросить</a>
+        </div>
+    </form>
+</div>
+
+{% if repertoire %}
+    <h3>Найдено записей: {{ repertoire.count }}</h3>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>День</th>
+                <th>Время</th>
+                <th>Зал</th>
+                <th>Ведущий</th>
+                <th>Трек</th>
+                <th>Жанр</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in repertoire %}
+            <tr>
+                <td>{{ item.date }}</td>
+                <td>{{ item.day }}</td>
+                <td>{{ item.start_time|time:"H:i" }} - {{ item.end_time|time:"H:i" }}</td>
+                <td>{{ item.hall }}</td>
+                <td>{{ item.host }}</td>
+                <td>
+                    <strong>{{ item.music_track.artist }}</strong><br>
+                    {{ item.music_track.title }}
+                </td>
+                <td>{{ item.music_track.genre }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    {% if request.GET %}
+    <div style="text-align: center; padding: 2rem;">
+        <h3>😔 По вашему запросу ничего не найдено</h3>
+        <p>Попробуйте изменить параметры поиска</p>
+    </div>
+    {% endif %}
+{% endif %}
+{% endblock %}

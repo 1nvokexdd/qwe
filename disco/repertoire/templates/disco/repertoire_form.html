@@ -1,0 +1,60 @@
+<!-- templates/disco/repertoire_form.html -->
+{% extends 'base.html' %}
+
+{% block title %}Добавить в репертуар - Дискотека{% endblock %}
+
+{% block content %}
+<h1>➕ Добавить запись в репертуар</h1>
+
+<form method="post">
+    {% csrf_token %}
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+        <div>
+            <div class="form-group">
+                <label for="id_music_track">Музыкальный трек:</label>
+                {{ form.music_track }}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_hall">Зал:</label>
+                {{ form.hall }}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_host">Ведущий:</label>
+                {{ form.host }}
+            </div>
+        </div>
+        
+        <div>
+            <div class="form-group">
+                <label for="id_day">День недели:</label>
+                {{ form.day }}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_date">Дата:</label>
+                {{ form.date }}
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label for="id_start_time">Время начала:</label>
+                    {{ form.start_time }}
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_end_time">Время окончания:</label>
+                    {{ form.end_time }}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div style="text-align: center; margin-top: 2rem;">
+        <button type="submit" class="btn">💾 Сохранить</button>
+        <a href="{% url 'repertoire:repertoire_list' %}" class="btn">❌ Отмена</a>
+    </div>
+</form>
+{% endblock %}

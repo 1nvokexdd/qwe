@@ -1,0 +1,86 @@
+<!-- templates/disco/dashboard.html -->
+{% extends 'base.html' %}
+
+{% block title %}Главная - Дискотека{% endblock %}
+
+{% block content %}
+<h1>🎉 Добро пожаловать в систему дискотеки!</h1>
+
+<div class="stats">
+    <div class="stat-card">
+        <div class="stat-number">{{ today_repertoire.count }}</div>
+        <div>Событий сегодня</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ total_tracks }}</div>
+        <div>Треков в базе</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ upcoming_events.count }}</div>
+        <div>Ближайших событий</div>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+    <div>
+        <h2>🎵 Сегодняшний репертуар</h2>
+        {% if today_repertoire %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Время</th>
+                        <th>Зал</th>
+                        <th>Трек</th>
+                        <th>Ведущий</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in today_repertoire %}
+                    <tr>
+                        <td>{{ item.start_time|time:"H:i" }}</td>
+                        <td>{{ item.hall }}</td>
+                        <td>{{ item.music_track.title }}</td>
+                        <td>{{ item.host }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>На сегодня событий не запланировано</p>
+        {% endif %}
+    </div>
+
+    <div>
+        <h2>📅 Ближайшие события</h2>
+        {% if upcoming_events %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>День</th>
+                        <th>Зал</th>
+                        <th>Трек</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in upcoming_events %}
+                    <tr>
+                        <td>{{ item.date }}</td>
+                        <td>{{ item.day }}</td>
+                        <td>{{ item.hall }}</td>
+                        <td>{{ item.music_track.artist }} - {{ item.music_track.title }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Нет предстоящих событий</p>
+        {% endif %}
+    </div>
+</div>
+
+<div style="margin-top: 2rem; text-align: center;">
+    <a href="{% url 'repertoire:repertoire_add' %}" class="btn">➕ Добавить в репертуар</a>
+    <a href="{% url 'repertoire:repertoire_list' %}" class="btn">📋 Весь репертуар</a>
+</div>
+{% endblock %}

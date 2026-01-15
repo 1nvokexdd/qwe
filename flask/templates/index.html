@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Главная - Disco DB Analyzer{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 text-center mb-5">
+        <h1 class="display-4">🎶 Анализ музыкальной базы данных</h1>
+        <p class="lead">Инструменты для анализа репертуара дискотеки</p>
+    </div>
+</div>
+
+   
+   <div class="col-md-3 mb-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">📊 Статистика</h5>
+                <p class="card-text">Статистика по жанрам и ведущим</p>
+                <a href="{{ url_for('statistics') }}" class="btn btn-primary">Перейти</a>
+            </div>
+        </div>
+    </div>
+    
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    // Load quick statistics
+    $.get('/api/stats/tracks_by_genre', function(data) {
+        let html = '';
+        data.slice(0, 4).forEach(function(item) {
+            html += `
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6>${item.genre}</h6>
+                            <h3>${item.count}</h3>
+                            <small>треков</small>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        $('#quick-stats').html(html);
+    });
+});
+</script>
+{% endblock %}

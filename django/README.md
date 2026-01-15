@@ -41,3 +41,14 @@ python manage.py createsuperuser
 python manage.py runserver
 
 
+## Для запуска сбора статистики flask 
+cd flask 
+
+venv\Scripts\activate
+
+pip install -r requirements.txt
+
+python app.py 
+
+
+

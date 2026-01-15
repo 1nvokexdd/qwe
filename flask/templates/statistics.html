@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}Статистика - Disco DB Analyzer{% endblock %}
+
+{% block content %}
+<h2>📊 Статистика базы данных</h2>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Треки по жанрам</h5>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Жанр</th>
+                            <th>Количество</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in stats.tracks_by_genre %}
+                        <tr>
+                            <td>{{ item.genre }}</td>
+                            <td><span class="badge bg-primary">{{ item.count }}</span></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Сеансы по дням недели</h5>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>День</th>
+                            <th>Сеансов</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in stats.sessions_by_weekday %}
+                        <tr>
+                            <td>{{ item.weekday }}</td>
+                            <td><span class="badge bg-success">{{ item.sessions }}</span></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Производительность ведущих</h5>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Ведущий</th>
+                            <th>Сеансов</th>
+                            <th>Уникальных треков</th>
+                            <th>Средний BPM</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for host in stats.host_performance %}
+                        <tr>
+                            <td>{{ host.first_name }} {{ host.last_name }}</td>
+                            <td>{{ host.sessions_hosted }}</td>
+                            <td>{{ host.unique_tracks }}</td>
+                            <td>{{ "%.1f"|format(host.avg_bpm|float) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Использование залов</h5>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Зал</th>
+                            <th>Вместимость</th>
+                            <th>Сеансов</th>
+                            <th>Дней использования</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for hall in stats.hall_utilization %}
+                        <tr>
+                            <td>{{ hall.hall }}</td>
+                            <td>{{ hall.capacity }}</td>
+                            <td>{{ hall.total_sessions }}</td>
+                            <td>{{ hall.days_used }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
